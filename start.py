@@ -17,7 +17,7 @@ except ImportError:
 
 # If modifying these scopes, delete your previously saved credentials
 # at ~/.credentials/sheets.googleapis.com-python-quickstart.json
-SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly'
+SCOPES = 'https://www.googleapis.com/auth/spreadsheets'
 CLIENT_SECRET_FILE = 'client_id.json'
 APPLICATION_NAME = 'Kiln Troll'
 SPREADSHEET_ID = '11HniCGaGZ8Hxs9w4wf1NqTmgrF_GLUpVq_j3qO5IJ2k'
@@ -37,7 +37,7 @@ def get_credentials():
     if not os.path.exists(credential_dir):
         os.makedirs(credential_dir)
     credential_path = os.path.join(credential_dir,
-                                   'sheets.googleapis.com-python-quickstart.json')
+                                   'sheets.googleapis.com-kiln-troll.json')
 
     store = Storage(credential_path)
     credentials = store.get()
@@ -66,16 +66,29 @@ def main():
                               discoveryServiceUrl=discoveryUrl)
 
     range_name = 'Sheet1'
-    result = service.spreadsheets().values().get(
-        spreadsheetId=SPREADSHEET_ID, range=range_name).execute()
-    values = result.get('values', [])
+    # How the input data should be interpreted.
+    value_input_option = 'USER_ENTERED'
 
-    if not values:
-        print('No data found.')
-    else:
-        for row in values:
-            # Print columns A and E, which correspond to indices 0 and 4.
-            print('%s, %s' % (row[0], row[1]))
+    # How the input data should be inserted.
+    # insert_data_option = ''  # OVERWRITE | INSERT_ROWS
+
+    value_range_body = {
+        "values": [
+            [ "x", 3 ]
+        ]
+    }
+
+    request = service.spreadsheets().values().append(spreadsheetId=SPREADSHEET_ID, range=range_name, valueInputOption=value_input_option, body=value_range_body)
+    response = request.execute()
+    # result = service.spreadsheets().values().append(
+    #     spreadsheetId=SPREADSHEET_ID, range=range_name).execute()
+    # values = result.get('values', [])
+
+    # if not values:
+    #     print('No data found.')
+    # else:
+    #     for row in values:
+    #         print('%s, %s' % (row[0], row[1]))
 
 
 if __name__ == '__main__':

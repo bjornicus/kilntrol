@@ -88,10 +88,14 @@ def main():
     service = get_service()
 
     range_name = 'Sheet1'
-    # How the input data should be interpreted.
-    append_row(service, range_name, ["the time", 1234])
 
-
+    import subprocess
+    f = subprocess.Popen(['tail','-F', 'temperature_log.csv'],\
+            stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    while True:
+        line = f.stdout.readline()
+        print('.')
+        append_row(service, range_name, line.split(','))
 
 
 if __name__ == '__main__':

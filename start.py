@@ -1,8 +1,8 @@
-
-
+""" start logging stuff to google sheets
+"""
 from __future__ import print_function
-import httplib2
 import os
+import httplib2
 
 from apiclient import discovery
 from oauth2client import client
@@ -51,22 +51,20 @@ def get_credentials():
         print('Storing credentials to ' + credential_path)
     return credentials
 
-def main():
-    """Shows basic usage of the Sheets API.
-
-    Creates a Sheets API service object and prints the names and majors of
-    students in a sample spreadsheet:
-    https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
+def get_service():
+    """ Gets a the google sheets service
+    Returns:
+        The sheets service
     """
     credentials = get_credentials()
     http = credentials.authorize(httplib2.Http())
-    discoveryUrl = ('https://sheets.googleapis.com/$discovery/rest?'
-                    'version=v4')
+    discovery_url = ('https://sheets.googleapis.com/$discovery/rest?'
+                     'version=v4')
     service = discovery.build('sheets', 'v4', http=http,
-                              discoveryServiceUrl=discoveryUrl)
+                              discoveryServiceUrl=discovery_url)
+    return service
 
-    range_name = 'Sheet1'
-    # How the input data should be interpreted.
+def append_row(service, range_name, row):
     value_input_option = 'USER_ENTERED'
 
     # How the input data should be inserted.
@@ -74,23 +72,27 @@ def main():
 
     value_range_body = {
         "values": [
-            [ "x", 3 ]
+            row
         ]
     }
 
-    request = service.spreadsheets().values().append(spreadsheetId=SPREADSHEET_ID, range=range_name, valueInputOption=value_input_option, body=value_range_body)
-    response = request.execute()
-    # result = service.spreadsheets().values().append(
-    #     spreadsheetId=SPREADSHEET_ID, range=range_name).execute()
-    # values = result.get('values', [])
+    service.spreadsheets().values().append(
+        spreadsheetId=SPREADSHEET_ID,
+        range=range_name,
+        valueInputOption=value_input_option,
+        body=value_range_body).execute()
 
-    # if not values:
-    #     print('No data found.')
-    # else:
-    #     for row in values:
-    #         print('%s, %s' % (row[0], row[1]))
+def main():
+    """ Main :)
+    """
+    service = get_service()
+
+    range_name = 'Sheet1'
+    # How the input data should be interpreted.
+    append_row(service, range_name, ["the time", 1234])
+
+
 
 
 if __name__ == '__main__':
     main()
-

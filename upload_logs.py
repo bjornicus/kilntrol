@@ -95,9 +95,10 @@ def tail_and_upload():
             stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     while True:
         line = f.stdout.readline()
-        sys.stdout.write('.')
+        sys.stdout.write(line)
         try:
-            append_row(service, range_name, line.split(','))
+            result = append_row(service, range_name, line.split(','))
+            print(result['tableRange'])
         except (KeyboardInterrupt, SystemExit):
             raise
         except:
@@ -114,12 +115,14 @@ def test():
     range_name = 'Sheet1!A1'
     print('uploading...')
     result = append_row(service, range_name, "4:06 AM, 1234, 68".split(','))
+    print(result['tableRange'])
+    result = append_row(service, range_name, "4:07 AM, 5678, 68".split(','))
     print(result)
 
 
 def main():
-    tail_and_upload()
-    # test()
+    # tail_and_upload()
+    test()
 
 if __name__ == '__main__':
     main()

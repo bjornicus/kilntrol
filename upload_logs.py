@@ -108,9 +108,9 @@ def tail_and_upload(service):
     import subprocess
     f = subprocess.Popen(['tail','-F', '-n', '0', LOGFILE],\
             stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    print(f.stderr.readline())
     while True:
         line = f.stdout.readline()
-        sys.stdout.write(line)
         try:
             append_row(service, range_name, line.split(','))
         except (KeyboardInterrupt, SystemExit):

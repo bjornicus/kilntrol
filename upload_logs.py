@@ -77,11 +77,13 @@ def append_row(service, range_name, row):
         ]
     }
 
-    return service.spreadsheets().values().append(
+    result = service.spreadsheets().values().append(
         spreadsheetId=SPREADSHEET_ID,
         range=range_name,
         valueInputOption=value_input_option,
         body=value_range_body).execute()
+    print('appended "' + str(row) + '" at ' + result['tableRange'])
+    return result
 
 def tail_and_upload():
     """ Tails the temperature_log.csv and uploads entries to google sheets
@@ -97,8 +99,7 @@ def tail_and_upload():
         line = f.stdout.readline()
         sys.stdout.write(line)
         try:
-            result = append_row(service, range_name, line.split(','))
-            print(result['tableRange'])
+            append_row(service, range_name, line.split(','))
         except (KeyboardInterrupt, SystemExit):
             raise
         except:
@@ -114,10 +115,9 @@ def test():
 
     range_name = 'Sheet1!A1'
     print('uploading...')
-    result = append_row(service, range_name, "4:06 AM, 1234, 68".split(','))
-    print(result['tableRange'])
-    result = append_row(service, range_name, "4:07 AM, 5678, 68".split(','))
-    print(result)
+    append_row(service, range_name, "4:06 AM, 1234, 68".split(','))
+    append_row(service, range_name, "4:07 AM, 5678, 68".split(','))
+
 
 
 def main():

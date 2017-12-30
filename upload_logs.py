@@ -121,8 +121,8 @@ def test():
 
 
 def main():
-    # tail_and_upload()
-    test()
+    tail_and_upload()
+    # test()
 
 if __name__ == '__main__':
     main()

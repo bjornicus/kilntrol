@@ -95,7 +95,7 @@ def upload_logfile(service, range_name):
     rows = []
     with open(LOGFILE) as file:
         for l in file:
-            row.append(l.strip().split(','))
+            rows.append(l.strip().split(','))
     append_rows(service,range_name ,rows)
 
 def tail_and_upload(service):

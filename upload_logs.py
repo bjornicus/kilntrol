@@ -77,18 +77,18 @@ def append_row(service, range_name, row):
         ]
     }
 
-    service.spreadsheets().values().append(
+    return service.spreadsheets().values().append(
         spreadsheetId=SPREADSHEET_ID,
         range=range_name,
         valueInputOption=value_input_option,
         body=value_range_body).execute()
 
-def main():
-    """ Main :)
+def tail_and_upload():
+    """ Tails the temperature_log.csv and uploads entries to google sheets
     """
     service = get_service()
 
-    range_name = 'Sheet1'
+    range_name = 'Sheet1!A1'
 
     import subprocess
     f = subprocess.Popen(['tail','-F', '-n', '+0' 'temperature_log.csv'],\
@@ -106,7 +106,20 @@ def main():
                 line
             ])
 
+def test():
+    """ Uploads a test entry to google sheets
+    """
+    service = get_service()
 
+    range_name = 'Sheet1!A1'
+    print('uploading...')
+    result = append_row(service, range_name, "4:06 AM, 1234, 68".split(','))
+    print(result)
+
+
+def main():
+    tail_and_upload()
+    # test()
 
 if __name__ == '__main__':
     main()

@@ -2,6 +2,7 @@
 """
 from __future__ import print_function
 import os
+import sys
 import httplib2
 
 from apiclient import discovery
@@ -94,8 +95,17 @@ def main():
             stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     while True:
         line = f.stdout.readline()
-        print('.')
-        append_row(service, range_name, line.split(','))
+        sys.stdout.write('.')
+        try:
+            append_row(service, range_name, line.split(','))
+        except (KeyboardInterrupt, SystemExit):
+            raise
+        except:
+            sys.stderr.writelines([
+                'error appending entry: ' + sys.exc_info()[0],
+                line
+            ])
+
 
 
 if __name__ == '__main__':

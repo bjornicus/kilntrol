@@ -171,7 +171,7 @@ if __name__ == "__main__":
                 print("tc: {} and rj: {} error ratio: {}/{}".format(tc, rj, error_count, reading_count))
                 if reading_count % 12 == 0:
                     print("logging...")
-                    logfile.write(datetime.now().strftime("%I:%M %p, " + str(tc) + "\n"))
+                    logfile.write(datetime.now().strftime("%I:%M %p, " + str(tc) +", " + str(rj) + "\n"))
                     logfile.flush()
             time.sleep(5)
         except KeyboardInterrupt:

@@ -91,7 +91,7 @@ def main():
     range_name = 'Sheet1'
 
     import subprocess
-    f = subprocess.Popen(['tail','-F', 'temperature_log.csv'],\
+    f = subprocess.Popen(['tail','-F', '-n', '+0' 'temperature_log.csv'],\
             stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     while True:
         line = f.stdout.readline()

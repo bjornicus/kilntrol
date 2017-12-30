@@ -22,6 +22,7 @@ SCOPES = 'https://www.googleapis.com/auth/spreadsheets'
 CLIENT_SECRET_FILE = 'client_id.json'
 APPLICATION_NAME = 'Kiln Troll'
 SPREADSHEET_ID = '11HniCGaGZ8Hxs9w4wf1NqTmgrF_GLUpVq_j3qO5IJ2k'
+LOGFILE = 'temperature_log.csv'
 
 
 def get_credentials():
@@ -66,15 +67,16 @@ def get_service():
     return service
 
 def append_row(service, range_name, row):
+    return append_rows(service, range_name, [row])
+
+def append_rows(service, range_name, rows):
     value_input_option = 'USER_ENTERED'
 
     # How the input data should be inserted.
     # insert_data_option = ''  # OVERWRITE | INSERT_ROWS
 
     value_range_body = {
-        "values": [
-            row
-        ]
+        "values": rows
     }
 
     result = service.spreadsheets().values().append(
@@ -82,18 +84,29 @@ def append_row(service, range_name, row):
         range=range_name,
         valueInputOption=value_input_option,
         body=value_range_body).execute()
-    print('appended "' + str(row) + '" at ' + result['tableRange'])
+    print('appended "' + str(rows) + '" at ' + result['tableRange'])
     return result
 
-def tail_and_upload():
+def upload_logfile(service, range_name):
+    """ Uploads the log file contents to the spreadsheet
+    """
+    with open(LOGFILE, "r") as logfile:
+        lines = logfile.readlines()
+    rows = []
+    with open(LOGFILE) as file:
+        for l in file:
+            row.append(l.strip().split(','))
+    append_rows(service,range_name ,rows)
+
+def tail_and_upload(service):
     """ Tails the temperature_log.csv and uploads entries to google sheets
     """
-    service = get_service()
-
     range_name = 'Sheet1!A1'
 
+    upload_logfile(service, range_name)
+
     import subprocess
-    f = subprocess.Popen(['tail','-F', '-n', '+0' 'temperature_log.csv'],\
+    f = subprocess.Popen(['tail','-F', '-n', '0', LOGFILE],\
             stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     while True:
         line = f.stdout.readline()
@@ -108,11 +121,9 @@ def tail_and_upload():
                 line
             ])
 
-def test():
+def test(service):
     """ Uploads a test entry to google sheets
     """
-    service = get_service()
-
     range_name = 'Sheet1!A1'
     print('uploading...')
     append_row(service, range_name, "4:06 AM, 1234, 68".split(','))
@@ -121,8 +132,9 @@ def test():
 
 
 def main():
-    tail_and_upload()
-    # test()
+    service = get_service()
+    tail_and_upload(service)
+    # test(sevice)
 
 if __name__ == '__main__':
     main()

@@ -117,7 +117,7 @@ def tail_and_upload(service):
             raise
         except:
             sys.stderr.writelines([
-                'error appending entry: ' + sys.exc_info()[0],
+                'error appending entry: ' + str(sys.exc_info()[0]),
                 line
             ])
 

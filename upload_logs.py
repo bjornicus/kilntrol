@@ -69,11 +69,8 @@ def get_service():
 def append_row(service, range_name, row):
     return append_rows(service, range_name, [row])
 
-def append_rows(service, range_name, rows):
+def append_rows(service, range_name, rows, insert_mode = 'INSERT_ROWS'):
     value_input_option = 'USER_ENTERED'
-
-    # How the input data should be inserted.
-    # insert_data_option = ''  # OVERWRITE | INSERT_ROWS
 
     value_range_body = {
         "values": rows
@@ -83,6 +80,7 @@ def append_rows(service, range_name, rows):
         spreadsheetId=SPREADSHEET_ID,
         range=range_name,
         valueInputOption=value_input_option,
+        insertDataOption=insert_mode,
         body=value_range_body).execute()
     print('appended "' + str(rows) + '" at ' + result['tableRange'])
     return result
@@ -96,12 +94,12 @@ def upload_logfile(service, range_name):
     with open(LOGFILE) as file:
         for l in file:
             rows.append(l.strip().split(','))
-    append_rows(service,range_name ,rows)
+    append_rows(service,range_name, rows, 'OVERWRITE')
 
 def tail_and_upload(service):
     """ Tails the temperature_log.csv and uploads entries to google sheets
     """
-    range_name = 'Sheet1!A1'
+    range_name = 'Sheet1!A2'
 
     upload_logfile(service, range_name)
 

@@ -84,14 +84,14 @@ class MAX31855(object):
                 # Did you remember to initialize all other SPI devices?
                 raise MAX31855Error("Unknown Error")
 
-    def data_to_tc_temperature(self, data_32 = None):
+    def data_to_tc_temperature(self, data_32=None):
         '''Takes an integer and returns a thermocouple temperature in celsius.'''
         if data_32 is None:
             data_32 = self.data
         tc_data = ((data_32 >> 18) & 0x3FFF)
         return self.convert_tc_data(tc_data)
 
-    def data_to_rj_temperature(self, data_32 = None):
+    def data_to_rj_temperature(self, data_32=None):
         '''Takes an integer and returns a reference junction temperature in celsius.'''
         if data_32 is None:
             data_32 = self.data
@@ -112,11 +112,11 @@ class MAX31855(object):
     def convert_rj_data(self, rj_data):
         '''Convert reference junction data to a useful number (celsius).'''
         if rj_data & 0x800:
-           without_resolution = ~rj_data & 0x7FF
-           without_resolution += 1
-           without_resolution *= -1
+            without_resolution = ~rj_data & 0x7FF
+            without_resolution += 1
+            without_resolution *= -1
         else:
-             without_resolution = rj_data & 0x7FF
+            without_resolution = rj_data & 0x7FF
         return without_resolution * 0.0625
 
     def to_c(self, celsius):
@@ -137,44 +137,8 @@ class MAX31855(object):
         GPIO.setup(self.clock_pin, GPIO.IN)
 
 class MAX31855Error(Exception):
-     def __init__(self, value):
-         self.value = value
-     def __str__(self):
-         return repr(self.value)
-
-if __name__ == "__main__":
-
-    # Multi-chip example
-    import time
-    # cs_pins = [4, 17, 18, 24]
-    cs_pins = [27]
-    clock_pin = 22
-    data_pin = 17
-    units = "f"
-    thermocouples = []
-    for cs_pin in cs_pins:
-        thermocouples.append(MAX31855(cs_pin, clock_pin, data_pin, units))
-    running = True
-    error_count = 0
-    reading_count = 0
-    logfile = open("temperature_log.csv", "a")
-    while(running):
-        try:
-            for thermocouple in thermocouples:
-                rj = thermocouple.get_rj()
-                try:
-                    reading_count += 1
-                    tc = thermocouple.get()
-                except MAX31855Error as e:
-                    tc = "Error: " + e.value
-                    error_count += 1
-                print("tc: {} and rj: {} error ratio: {}/{}".format(tc, rj, error_count, reading_count))
-                if reading_count % 12 == 0:
-                    print("logging...")
-                    logfile.write(datetime.now().strftime("%I:%M %p, " + str(tc) +", " + str(rj) + "\n"))
-                    logfile.flush()
-            time.sleep(5)
-        except KeyboardInterrupt:
-            running = False
-    for thermocouple in thermocouples:
-        thermocouple.cleanup()
+    """ MAX31855Error class """
+    def __init__(self, value):
+        self.value = value
+    def __str__(self):
+        return repr(self.value)

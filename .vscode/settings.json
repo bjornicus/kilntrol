@@ -1,0 +1,7 @@
+{
+    "python.formatting.provider": "autopep8",
+    "python.autoComplete.extraPaths": [
+        "${env.SPARK_HOME}/python",
+        "${env.SPARK_HOME}/python/pyspark"
+    ]
+}

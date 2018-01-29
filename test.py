@@ -1,6 +1,6 @@
 """kilntrol unit tests"""
 import unittest
-from kilntrol import KilnTrol
+from kilntrol import KilnTrol, TargetProfile
 
 import time
 
@@ -41,31 +41,6 @@ class TestKiln(object):
         else:
             self.temperature -= self.cooling_rate * time_delta            
 
-class TestProfile(object):
-    def __init__(self, profile):
-        self.profile = profile
-        self.last_time = profile[-1][0]
-
-    def temperature_at(self, time):
-        if self.is_finished(time):
-            return 0
-
-        next_point_index = 0
-        while self.profile[next_point_index][0] < time:
-            next_point_index +=1
-        if next_point_index == 0:
-            return self.profile[0][1]
-        last_point = self.profile[next_point_index -1]
-        next_point = self.profile[next_point_index]
-        duration = next_point[0] - last_point[0]
-        temperature_delta = next_point[1] - last_point[1]
-        slope = temperature_delta/duration
-        time_since_last_point = time - last_point[0]
-        return last_point[1] + slope*time_since_last_point
-
-    def is_finished(self, time):
-        return self.last_time < time
-
 class KilnTrolTests(unittest.TestCase):
     # def setUp(self):
     #     self.subject = kilntrol()
@@ -73,7 +48,7 @@ class KilnTrolTests(unittest.TestCase):
     # def tearDown(self):
     #     self.widget.dispose()
     def test_profile(self):
-        profile = TestProfile([
+        profile = TargetProfile([
             [1, 8],
             [2,12],
             [3,15],
@@ -96,7 +71,7 @@ class KilnTrolTests(unittest.TestCase):
         """
         clock = TestClock()
         kiln = TestKiln(8, clock)
-        profile = TestProfile([
+        profile = TargetProfile([
             [0.1, 8],
             [0.2,12],
             [0.3,15],

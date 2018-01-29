@@ -1,4 +1,5 @@
 #!/usr/bin/python
+from __future__ import print_function
 import RPi.GPIO as GPIO
 from datetime import datetime 
 
@@ -37,6 +38,18 @@ class MAX31855(object):
         GPIO.output(self.cs_pin, GPIO.HIGH)
 
     def get(self):
+        ''' tries up to five times to read the thermocouple '''
+        error_count = 0
+        while error_count < 5:
+            try:
+                return self.get()
+            except MAX31855Error as e:
+                error_count += 1
+                print("Error: " + e.value)
+                if error_count == 5:
+                    raise
+
+    def get_tc(self):
         '''Reads SPI bus and returns current value of thermocouple.'''
         self.read()
         self.checkErrors()

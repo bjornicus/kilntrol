@@ -3,8 +3,8 @@
 from __future__ import print_function
 import time
 
-HEATERSTATEFILE = 'heater_state.sim'
-TEMPERATUREFILE = 'temperature.sim'
+HEATERSTATEFILE = '_heater.sim'
+TEMPERATUREFILE = '_temperature.sim'
 
 class HeaterRelay(object):
     def __init__(self, relay_pin, board = "sim"):

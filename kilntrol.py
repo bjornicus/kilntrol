@@ -35,6 +35,7 @@ class KilnTrol(object):
             self.heater.on()
         else:
             self.heater.off()
+        print('current: '+ str(self.temperature.get()) + ' target: ' + str(target_temperature))
 
 class TargetProfile(object):
     def __init__(self, points):
@@ -69,8 +70,9 @@ class BasicClock(object):
 
 def main():
     """ Run KilnTrol """
-    from max31855 import MAX31855
-    from heater import HeaterRelay
+    # from max31855 import MAX31855
+    # from heater import HeaterRelay
+    from heater_sim import HeaterRelay, MAX31855
     from profiles import sample_profile
 
     temperature = MAX31855(cs_pin = 27, clock_pin = 22, data_pin = 17, units = "f")

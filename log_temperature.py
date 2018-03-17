@@ -11,6 +11,7 @@ UNITS = "f"
 
 LOG_INTERVAL = 12
 
+
 def log_readings(thermocouple, logfile):
     """
     Reads the thermocouple and reference junction temperatures and writes them to the console.
@@ -31,6 +32,7 @@ def log_readings(thermocouple, logfile):
             "%I:%M %p, " + str(tc) + ", " + str(rj) + "\n"))
         logfile.flush()
 
+
 def main():
     thermocouple = MAX31855(CS_PIN, CLOCK_PIN, DATA_PIN, UNITS)
     thermocouple.error_count = 0
@@ -49,5 +51,6 @@ def main():
     thermocouple.cleanup()
     logfile.close()
 
-if __name__  == '__main__':
+
+if __name__ == '__main__':
     main()

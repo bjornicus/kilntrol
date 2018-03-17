@@ -76,9 +76,10 @@ def main():
     temperature = MAX31855(cs_pin = 27, clock_pin = 22, data_pin = 17, units = "f")
     heater = HeaterRelay(relay_pin = 26)
     clock = BasicClock()
-    target_profile = sample_profile 
+    target_profile = TargetProfile(sample_profile)
 
     kilntrol = KilnTrol(temperature, heater, clock, target_profile )
+    kilntrol.run()
 
 if __name__  == '__main__':
     main()

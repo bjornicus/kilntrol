@@ -23,7 +23,7 @@ SCOPES = 'https://www.googleapis.com/auth/spreadsheets'
 CLIENT_SECRET_FILE = 'client_id.json'
 APPLICATION_NAME = 'Kiln Troll'
 SPREADSHEET_ID = '11HniCGaGZ8Hxs9w4wf1NqTmgrF_GLUpVq_j3qO5IJ2k'
-LOGFILE = 'temperature_log.csv'
+LOGFILE = 'logs/temperature.log'
 
 
 def get_credentials():
@@ -86,7 +86,10 @@ def append_rows(service, range_name, rows, insert_mode='INSERT_ROWS'):
         valueInputOption=value_input_option,
         insertDataOption=insert_mode,
         body=value_range_body).execute()
-    print('appended "' + str(rows) + '" at ' + result['tableRange'])
+    print(result)
+    print(result['updates']['updatedRange'])
+    print('appended "' + str(rows) + '" at ' +
+          str(result['updates']['updatedRange']))
     return result
 
 
@@ -105,7 +108,7 @@ def upload_logfile(service, range_name):
 def tail_and_upload(service):
     """ Tails the temperature_log.csv and uploads entries to google sheets
     """
-    range_name = 'Sheet1!A2'
+    range_name = 'Sheet1!A1'
 
     upload_logfile(service, range_name)
 

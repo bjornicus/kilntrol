@@ -1,5 +1,9 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 """ Kilt Troll """
 import time
+import os
 
 
 class KilnTrol(object):
@@ -80,12 +84,14 @@ class BasicClock(object):
 class FileLogger(object):
     def __init__(self, filename):
         self.logfile = filename
+        if not os.path.exists(filename):
+            with open(filename, 'w') as log:
+                log.write("Time, Temperature °F, Target Temp\n")
 
     def log(self, t_sec, temp, target):
         str_time = time.strftime("%H:%M:%S", time.gmtime(t_sec))
         with open(self.logfile, 'a') as log:
             log.write(str_time + ", " + str(temp) + ", " + str(target) + "\n")
-            log.flush()
 
 
 def main():

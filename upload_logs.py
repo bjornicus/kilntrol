@@ -17,7 +17,8 @@ except ImportError:
     flags = None
 
 # If modifying these scopes, delete your previously saved credentials
-# at ~/.credentials/sheets.googleapis.com-python-quickstart.json
+# at ~/.credentials/sheets.googleapis.com-kiln-troll.json
+# see https://developers.google.com/sheets/api/quickstart/python
 SCOPES = 'https://www.googleapis.com/auth/spreadsheets'
 CLIENT_SECRET_FILE = 'client_id.json'
 APPLICATION_NAME = 'Kiln Troll'
@@ -48,10 +49,11 @@ def get_credentials():
         flow.user_agent = APPLICATION_NAME
         if flags:
             credentials = tools.run_flow(flow, store, flags)
-        else: # Needed only for compatibility with Python 2.6
+        else:  # Needed only for compatibility with Python 2.6
             credentials = tools.run(flow, store)
         print('Storing credentials to ' + credential_path)
     return credentials
+
 
 def get_service():
     """ Gets a the google sheets service
@@ -66,10 +68,12 @@ def get_service():
                               discoveryServiceUrl=discovery_url)
     return service
 
+
 def append_row(service, range_name, row):
     return append_rows(service, range_name, [row])
 
-def append_rows(service, range_name, rows, insert_mode = 'INSERT_ROWS'):
+
+def append_rows(service, range_name, rows, insert_mode='INSERT_ROWS'):
     value_input_option = 'USER_ENTERED'
 
     value_range_body = {
@@ -85,6 +89,7 @@ def append_rows(service, range_name, rows, insert_mode = 'INSERT_ROWS'):
     print('appended "' + str(rows) + '" at ' + result['tableRange'])
     return result
 
+
 def upload_logfile(service, range_name):
     """ Uploads the log file contents to the spreadsheet
     """
@@ -94,7 +99,8 @@ def upload_logfile(service, range_name):
     with open(LOGFILE) as file:
         for l in file:
             rows.append(l.strip().split(','))
-    append_rows(service,range_name, rows, 'OVERWRITE')
+    append_rows(service, range_name, rows, 'OVERWRITE')
+
 
 def tail_and_upload(service):
     """ Tails the temperature_log.csv and uploads entries to google sheets
@@ -104,8 +110,8 @@ def tail_and_upload(service):
     upload_logfile(service, range_name)
 
     import subprocess
-    f = subprocess.Popen(['tail','-F', '-n', '0', LOGFILE],\
-            stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    f = subprocess.Popen(['tail', '-F', '-n', '0', LOGFILE],
+                         stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
     while True:
         line = f.stdout.readline()
@@ -119,6 +125,7 @@ def tail_and_upload(service):
                 line
             ])
 
+
 def test(service):
     """ Uploads a test entry to google sheets
     """
@@ -128,11 +135,11 @@ def test(service):
     append_row(service, range_name, "4:07 AM, 5678, 68".split(','))
 
 
-
 def main():
     service = get_service()
     tail_and_upload(service)
     # test(sevice)
+
 
 if __name__ == '__main__':
     main()

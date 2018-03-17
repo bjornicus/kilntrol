@@ -3,8 +3,8 @@
 from __future__ import print_function
 import time
 
-HEATERSTATEFILE = '_heater.sim'
-TEMPERATUREFILE = '_temperature.sim'
+HEATERSTATEFILE = 'logs/_heater.sim'
+TEMPERATUREFILE = 'logs/_temperature.sim'
 
 
 class HeaterRelay(object):
@@ -36,7 +36,6 @@ class MAX31855(object):
         try:
             with open(TEMPERATUREFILE, "r") as temperatureFile:
                 t = temperatureFile.read()
-            print(t)
             return float(t)
         except:
             time.sleep(0.33)

@@ -53,10 +53,10 @@ def main():
         try:
             with open(HEATERSTATEFILE, "r") as heaterStateFile:
                 if heaterStateFile.read() == "on":
-                    temperature = temperature + (1 - temperature/1000)
+                    temperature = temperature + (1 - temperature/1000) * 0.33
                 else:
                     # T(t) = Ts + (T0 - Ts ) e(-kt) but t == 1 always
-                    temperature = 65 + (temperature - 65)*(0.95)
+                    temperature = 65 + (temperature - 65)*(0.995)
             with open(TEMPERATUREFILE, "w") as temperatureFile:
                 temperatureFile.write(str(temperature))
             print(temperature)

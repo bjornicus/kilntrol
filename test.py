@@ -61,6 +61,7 @@ class KilnTrolTests(unittest.TestCase):
 
     # def tearDown(self):
     #     self.widget.dispose()
+    # @unittest.skip("reason for skipping")
     def test_profile(self):
         profile = TargetProfile([
             [1, 8],
@@ -78,6 +79,14 @@ class KilnTrolTests(unittest.TestCase):
 
         self.assertEqual(profile.temperature_at(6), 0)
 
+    def test_sample_profile(self):
+        from profiles import sample_profile, MINUTES
+        profile = TargetProfile(sample_profile)
+        self.assertEqual(profile.temperature_at(1 * MINUTES), 72)
+        self.assertEqual(profile.temperature_at(15 * MINUTES), 110)
+        self.assertEqual(profile.temperature_at(31 * MINUTES), 0)
+
+    # @unittest.skip("reason for skipping")
     def test_run_to_completion(self):
         """
             create a kilntrol and run to completion

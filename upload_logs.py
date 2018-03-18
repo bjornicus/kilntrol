@@ -70,7 +70,10 @@ def get_service():
 
 
 def append_row(service, range_name, row):
-    return append_rows(service, range_name, [row])
+    result = append_rows(service, range_name, [row])
+    print('appended "' + str(row) + '" at ' +
+          str(result['updates']['updatedRange']))
+    return result
 
 
 def append_rows(service, range_name, rows, insert_mode='INSERT_ROWS'):
@@ -86,10 +89,6 @@ def append_rows(service, range_name, rows, insert_mode='INSERT_ROWS'):
         valueInputOption=value_input_option,
         insertDataOption=insert_mode,
         body=value_range_body).execute()
-    print(result)
-    print(result['updates']['updatedRange'])
-    print('appended "' + str(rows) + '" at ' +
-          str(result['updates']['updatedRange']))
     return result
 
 

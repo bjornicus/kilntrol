@@ -28,6 +28,7 @@ class KilnTrol(object):
                 if self.target_profile.is_finished(self.clock.now()):
                     self.heater.off()
                     self.running = False
+                    self.log_until(self.clock.now() * 1.5)
             except KeyboardInterrupt:
                 self.running = False
 
@@ -45,6 +46,11 @@ class KilnTrol(object):
         else:
             self.heater.off()
         self.logger.log(now, t, target_temperature)
+
+    def log_until(self, t_stop):
+        while self.clock.now() < t_stop:
+            self.logger.log(self.clock.now, self.temperature.get(), 0)
+            time.sleep(self.tick_interval)
 
 
 class TargetProfile(object):

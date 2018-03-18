@@ -42,7 +42,7 @@ class MAX31855(object):
         error_count = 0
         while error_count < 5:
             try:
-                return self.get()
+                return self.get_tc()
             except MAX31855Error as e:
                 error_count += 1
                 print("Error: " + e.value)

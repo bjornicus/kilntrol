@@ -49,7 +49,7 @@ class MAX31855(object):
                 print("Error: " + e.value)
                 time.sleep(0.200)
                 if error_count == 5:
-                    raise
+                    return 0
 
     def get_tc(self):
         '''Reads SPI bus and returns current value of thermocouple.'''

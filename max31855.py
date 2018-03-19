@@ -2,6 +2,7 @@
 from __future__ import print_function
 import RPi.GPIO as GPIO
 from datetime import datetime 
+import time
 
 class MAX31855(object):
     '''Python driver for [MAX38155 Cold-Junction Compensated Thermocouple-to-Digital Converter](http://www.maximintegrated.com/datasheet/index.mvp/id/7273)
@@ -38,7 +39,7 @@ class MAX31855(object):
         GPIO.output(self.cs_pin, GPIO.HIGH)
 
     def get(self):
-        ''' tries up to five times to read the thermocouple '''
+        ''' tries up to five times over a second to read the thermocouple '''
         error_count = 0
         while error_count < 5:
             try:
@@ -46,6 +47,7 @@ class MAX31855(object):
             except MAX31855Error as e:
                 error_count += 1
                 print("Error: " + e.value)
+                time.sleep(0.200)
                 if error_count == 5:
                     raise
 

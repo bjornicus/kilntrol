@@ -49,7 +49,7 @@ class KilnTrol(object):
 
     def log_until(self, t_stop):
         while self.clock.now() < t_stop:
-            self.logger.log(self.clock.now, self.temperature.get(), 0)
+            self.logger.log(self.clock.now(), self.temperature.get(), 0)
             time.sleep(self.tick_interval)
 
 

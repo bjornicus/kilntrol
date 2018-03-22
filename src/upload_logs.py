@@ -20,10 +20,10 @@ except ImportError:
 # at ~/.credentials/sheets.googleapis.com-kiln-troll.json
 # see https://developers.google.com/sheets/api/quickstart/python
 SCOPES = 'https://www.googleapis.com/auth/spreadsheets'
-CLIENT_SECRET_FILE = '../client_id.json'
+CLIENT_SECRET_FILE = 'client_id.json'
 APPLICATION_NAME = 'Kiln Troll'
 SPREADSHEET_ID = '11HniCGaGZ8Hxs9w4wf1NqTmgrF_GLUpVq_j3qO5IJ2k'
-LOGFILE = '../logs/temperature.log'
+LOGFILE = 'logs/temperature_summary.log'
 
 
 def get_credentials():

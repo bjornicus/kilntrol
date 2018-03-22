@@ -61,7 +61,7 @@ def main():
                     temperature = 65 + (temperature - 65)*(0.995)
             with open(TEMPERATUREFILE, "w") as temperatureFile:
                 temperatureFile.write(str(temperature))
-            print(temperature)
+            # print(temperature)
             time.sleep(1/TICKS_PER_SECOND)
         except KeyboardInterrupt:
             running = False

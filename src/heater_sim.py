@@ -5,7 +5,7 @@ import time
 
 HEATERSTATEFILE = 'logs/_heater.sim'
 TEMPERATUREFILE = 'logs/_temperature.sim'
-TICKS_PER_SECOND = 10
+TICKS_PER_SECOND = 50
 
 
 class HeaterRelay(object):
@@ -55,14 +55,14 @@ def main():
             with open(HEATERSTATEFILE, "r") as heaterStateFile:
                 if heaterStateFile.read() == "on":
                     temperature = temperature + \
-                        (TICKS_PER_SECOND - temperature/1000) * 0.33
+                        (1 - temperature/1000) * 0.33
                 else:
                     # T(t) = Ts + (T0 - Ts ) e(-kt) but t == 1 always
                     temperature = 65 + (temperature - 65)*(0.995)
             with open(TEMPERATUREFILE, "w") as temperatureFile:
                 temperatureFile.write(str(temperature))
             print(temperature)
-            time.sleep(TICKS_PER_SECOND)
+            time.sleep(1/TICKS_PER_SECOND)
         except KeyboardInterrupt:
             running = False
 

@@ -66,14 +66,14 @@ def main():
         tick_interval - 5
     from target_profile import TargetProfile
     from loggers import FileLogger as Logger
-    from profiles import sample_profile
+    from profiles import glaze_profile as target_profile
 
     temperature = MAX31855(cs_pin=27, clock_pin=22,
                            data_pin=17, units="f")
     heater = HeaterRelay(relay_pin=26)
     clock = Clock()
     logger = Logger('logs/temperature')
-    target_profile = TargetProfile(sample_profile)
+    target_profile = TargetProfile(target_profile)
 
     kilntrol = KilnTrol(temperature, heater, clock,
                         target_profile, logger, tick_interval)

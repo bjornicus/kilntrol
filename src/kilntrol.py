@@ -5,11 +5,12 @@
 import time
 
 from target_profile import TargetProfile
-from clocks import BasicClock as Clock
+# from clocks import BasicClock as Clock
 from loggers import FileLogger as Logger
 # from max31855 import MAX31855
 # from heater import HeaterRelay
-from heater_sim import HeaterRelay, MAX31855
+from clocks import SpeedySimClock as Clock
+from heater_sim import HeaterRelay, MAX31855, TICKS_PER_SECOND
 from profiles import sample_profile
 
 
@@ -70,7 +71,8 @@ def main():
     logger = Logger('logs/temperature')
     target_profile = TargetProfile(sample_profile)
 
-    kilntrol = KilnTrol(temperature, heater, clock, target_profile, logger)
+    kilntrol = KilnTrol(temperature, heater, clock,
+                        target_profile, logger, 1/TICKS_PER_SECOND)
     kilntrol.run()
 
 

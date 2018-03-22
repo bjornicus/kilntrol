@@ -28,7 +28,7 @@ class FileLogger(object):
             "\n"
         with open(self.logfile, 'a') as log:
             log.write(log_entry)
-        if t_sec - self.last_log_time > self.log_summary_interval:
+        if (t_sec - self.last_log_time) > self.log_summary_interval:
             with open(self.summary_logfile, 'a') as log:
                 log.write(log_entry)
         self.last_log_time = t_sec

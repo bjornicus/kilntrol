@@ -3,7 +3,14 @@
 
 """ Kilt Troll """
 import time
-import os
+
+from target_profile import TargetProfile
+from clocks import BasicClock as Clock
+from loggers import FileLogger as Logger
+# from max31855 import MAX31855
+# from heater import HeaterRelay
+from heater_sim import HeaterRelay, MAX31855
+from profiles import sample_profile
 
 
 class KilnTrol(object):
@@ -53,65 +60,14 @@ class KilnTrol(object):
             time.sleep(self.tick_interval)
 
 
-class TargetProfile(object):
-    def __init__(self, points):
-        self.points = points
-        self.last_time = points[-1][0]
-
-    def temperature_at(self, time):
-        if self.is_finished(time):
-            return 0
-
-        next_point_index = 0
-        while self.points[next_point_index][0] < time:
-            next_point_index += 1
-        if next_point_index == 0:
-            return self.points[0][1]
-        last_point = self.points[next_point_index - 1]
-        next_point = self.points[next_point_index]
-        duration = next_point[0] - last_point[0]
-        temperature_delta = next_point[1] - last_point[1]
-        slope = temperature_delta/duration
-        time_since_last_point = time - last_point[0]
-        return last_point[1] + slope*time_since_last_point
-
-    def is_finished(self, time):
-        return self.last_time < time
-
-
-class BasicClock(object):
-    def __init__(self, start_time=time.time()):
-        self.start = start_time
-
-    def now(self):
-        return time.time() - self.start
-
-
-class FileLogger(object):
-    def __init__(self, filename):
-        self.logfile = filename
-        if not os.path.exists(filename):
-            with open(filename, 'w') as log:
-                log.write("Time, Temperature °F, Target Temp\n")
-
-    def log(self, t_sec, temp, target):
-        str_time = time.strftime("%H:%M:%S", time.gmtime(t_sec))
-        with open(self.logfile, 'a') as log:
-            log.write(str_time + ", " + str(temp) + ", " + str(target) + "\n")
-
-
 def main():
     """ Run KilnTrol """
-    # from max31855 import MAX31855
-    # from heater import HeaterRelay
-    from heater_sim import HeaterRelay, MAX31855
-    from profiles import sample_profile
 
     temperature = MAX31855(cs_pin=27, clock_pin=22,
                            data_pin=17, units="f")
     heater = HeaterRelay(relay_pin=26)
-    clock = BasicClock()
-    logger = FileLogger('logs/temperature.log')
+    clock = Clock()
+    logger = Logger('logs/temperature')
     target_profile = TargetProfile(sample_profile)
 
     kilntrol = KilnTrol(temperature, heater, clock, target_profile, logger)

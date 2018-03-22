@@ -5,6 +5,7 @@ import time
 
 HEATERSTATEFILE = 'logs/_heater.sim'
 TEMPERATUREFILE = 'logs/_temperature.sim'
+TICK_INTERVAL_SECONDS = 1
 
 
 class HeaterRelay(object):
@@ -16,7 +17,7 @@ class HeaterRelay(object):
             with open(HEATERSTATEFILE, "w") as heaterStateFile:
                 heaterStateFile.write("on")
         except:
-            time.sleep(0.2)
+            time.sleep(0.2*TICK_INTERVAL_SECONDS)
             return self.on()
 
     def off(self):
@@ -24,7 +25,7 @@ class HeaterRelay(object):
             with open(HEATERSTATEFILE, "w") as heaterStateFile:
                 heaterStateFile.write("off")
         except:
-            time.sleep(0.2)
+            time.sleep(0.2*TICK_INTERVAL_SECONDS)
             return self.on()
 
 
@@ -38,7 +39,7 @@ class MAX31855(object):
                 t = temperatureFile.read()
             return float(t)
         except:
-            time.sleep(0.33)
+            time.sleep(0.2*TICK_INTERVAL_SECONDS)
             return self.get()
 
 
@@ -53,14 +54,15 @@ def main():
         try:
             with open(HEATERSTATEFILE, "r") as heaterStateFile:
                 if heaterStateFile.read() == "on":
-                    temperature = temperature + (1 - temperature/1000) * 0.33
+                    temperature = temperature + \
+                        (TICK_INTERVAL_SECONDS - temperature/1000) * 0.33
                 else:
                     # T(t) = Ts + (T0 - Ts ) e(-kt) but t == 1 always
                     temperature = 65 + (temperature - 65)*(0.995)
             with open(TEMPERATUREFILE, "w") as temperatureFile:
                 temperatureFile.write(str(temperature))
             print(temperature)
-            time.sleep(1)
+            time.sleep(TICK_INTERVAL_SECONDS)
         except KeyboardInterrupt:
             running = False
 

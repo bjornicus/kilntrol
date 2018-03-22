@@ -20,10 +20,10 @@ except ImportError:
 # at ~/.credentials/sheets.googleapis.com-kiln-troll.json
 # see https://developers.google.com/sheets/api/quickstart/python
 SCOPES = 'https://www.googleapis.com/auth/spreadsheets'
-CLIENT_SECRET_FILE = 'client_id.json'
+CLIENT_SECRET_FILE = '../client_id.json'
 APPLICATION_NAME = 'Kiln Troll'
 SPREADSHEET_ID = '11HniCGaGZ8Hxs9w4wf1NqTmgrF_GLUpVq_j3qO5IJ2k'
-LOGFILE = 'logs/temperature.log'
+LOGFILE = '../logs/temperature.log'
 
 
 def get_credentials():
@@ -95,10 +95,8 @@ def append_rows(service, range_name, rows, insert_mode='INSERT_ROWS'):
 def upload_logfile(service, range_name):
     """ Uploads the log file contents to the spreadsheet
     """
-    with open(LOGFILE, "r") as logfile:
-        lines = logfile.readlines()
     rows = []
-    with open(LOGFILE) as file:
+    with open(LOGFILE, "r") as file:
         for l in file:
             rows.append(l.strip().split(','))
     append_rows(service, range_name, rows, 'OVERWRITE')

@@ -1,0 +1,5 @@
+√ less precision on target temp logged
+- don't log every tick, or at least make a second log with fewer points
+- resume on restart w/ smart clock
+√ start script should not exit and should kill spawned processes on exit
+- upload log starting at a1, overwriting existing stuff

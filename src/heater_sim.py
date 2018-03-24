@@ -56,9 +56,9 @@ def main():
         try:
             with open(HEATERSTATEFILE, "r") as heaterStateFile:
                 # there's always cooling
-                delta_t_cooling = -0.00020 * (temperature - room_temperature)
+                delta_t_cooling = -0.00022 * (temperature - room_temperature)
                 # but sometimes heating as well
-                delta_t_heating = 0.5 if heaterStateFile.read() == "on" else 0
+                delta_t_heating = 0.55 if heaterStateFile.read() == "on" else 0
                 if step % 300 == 0:
                     print('cooled by: ' + str(delta_t_cooling) + ' delta_t: ' + str(delta_t_cooling + delta_t_heating))
                 temperature += delta_t_heating + delta_t_cooling 

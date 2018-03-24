@@ -11,10 +11,10 @@ sample_profile = [
 
 test_profile = [
     [0, 70],
-    [1, 500],
-    [10 * MINUTES, 500],
-    [11 * MINUTES, 200],
-    [20 * MINUTES, 200],
+    [1, 400],
+    [15 * MINUTES, 400],
+    [15 * MINUTES + 1, 350],
+    [20 * MINUTES, 350],
     [30 * MINUTES, 70]
 ]
 

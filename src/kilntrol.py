@@ -66,7 +66,9 @@ def main():
         tick_interval - 5
     from target_profile import TargetProfile
     from loggers import FileLogger as Logger
+
     from profiles import glaze_profile as target_profile
+    # from profiles import test_profile as target_profile
     # from profiles import sample_profile as target_profile
 
     temperature = MAX31855(cs_pin=27, clock_pin=22,

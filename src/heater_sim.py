@@ -51,14 +51,18 @@ def main():
     print('starting at ' + startTemp)
     temperature = float(startTemp)
     room_temperature = 65
+    step = 0
     while running:
         try:
             with open(HEATERSTATEFILE, "r") as heaterStateFile:
                 # there's always cooling
-                temperature -=  0.0001 * (temperature - room_temperature) # per second
+                delta_t_cooling = -0.00020 * (temperature - room_temperature)
                 # but sometimes heating as well
-                if heaterStateFile.read() == "on":
-                    temperature += 0.33
+                delta_t_heating = 0.5 if heaterStateFile.read() == "on" else 0
+                if step % 300 == 0:
+                    print('cooled by: ' + str(delta_t_cooling) + ' delta_t: ' + str(delta_t_cooling + delta_t_heating))
+                temperature += delta_t_heating + delta_t_cooling 
+                step +=1
 
             with open(TEMPERATUREFILE, "w") as temperatureFile:
                 temperatureFile.write(str(temperature))

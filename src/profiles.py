@@ -3,9 +3,9 @@ HOURS = 60 * MINUTES
 
 sample_profile = [
     [0, 1174],
-    [30 * MINUTES, 1900],
-    [1 * HOURS, 1900],
-    [70 * MINUTES, 70],
+    [1 * MINUTES, 2000],
+    [70* MINUTES, 2000],
+    [71 * MINUTES, 70],
     [2 * HOURS, 70]
 ]
 

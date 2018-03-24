@@ -9,6 +9,14 @@ sample_profile = [
     [2 * HOURS, 70]
 ]
 
+test_profile = [
+    [0, 70],
+    [1, 500],
+    [10 * MINUTES, 500],
+    [11 * MINUTES, 200],
+    [20 * MINUTES, 200],
+    [30 * MINUTES, 70]
+]
 
 glaze_profile = [
     [0, 65],
@@ -17,6 +25,7 @@ glaze_profile = [
     [6 * HOURS , 1900],
     [7 * HOURS , 2010],
     [7 * HOURS + 40 * MINUTES , 2010],
-    [8 * HOURS , 2120],
-    [10 * HOURS , 1200]
+    [8 * HOURS , 2120]
+    # [8 * HOURS + 1 * MINUTES, 1200],
+    # [10 * HOURS , 1200]
 ]

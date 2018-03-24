@@ -3,7 +3,7 @@
 # SIGTERM-handler
 term_handler() {
     jobs -l
-    [[ -n "$kilntrol_pid" ]] && echo stoping kilntrol && kill $kilntrol_pid
+    echo killing $upload_pid and $sim_pid
     [[ -n "$upload_pid" ]] &&  echo stopping log upload && kill $upload_pid
     [[ -n "$sim_pid" ]] &&  echo stopping heater sim && kill $sim_pid
 
@@ -11,7 +11,7 @@ term_handler() {
 }
 trap 'term_handler' EXIT
 
-if [ $1 = "sim" ]
+if [ "$1" = "sim" ]
 then
     echo starting heater simulator
     python3 src/heater_sim.py &

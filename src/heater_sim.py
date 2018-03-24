@@ -5,7 +5,7 @@ import time
 
 HEATERSTATEFILE = 'logs/_heater.sim'
 TEMPERATUREFILE = 'logs/_temperature.sim'
-TICKS_PER_SECOND = 50
+TICKS_PER_SECOND = 100
 
 
 class HeaterRelay(object):

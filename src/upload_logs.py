@@ -76,7 +76,7 @@ def append_row(service, range_name, row):
     return result
 
 
-def append_rows(service, range_name, rows, insert_mode='INSERT_ROWS'):
+def append_rows(service, range_name, rows, insert_mode='OVERWRITE'):
     value_input_option = 'USER_ENTERED'
 
     value_range_body = {
@@ -91,6 +91,12 @@ def append_rows(service, range_name, rows, insert_mode='INSERT_ROWS'):
         body=value_range_body).execute()
     return result
 
+def clear(service, range_name):
+    return service.spreadsheets().values().clear(
+        spreadsheetId=SPREADSHEET_ID,
+        range=range_name,
+        body={}).execute()
+
 
 def upload_logfile(service, range_name):
     """ Uploads the log file contents to the spreadsheet
@@ -99,16 +105,19 @@ def upload_logfile(service, range_name):
     with open(LOGFILE, "r") as file:
         for l in file:
             rows.append(l.strip().split(','))
-    append_rows(service, range_name, rows, 'OVERWRITE')
+    append_rows(service, range_name, rows)
 
 
 def tail_and_upload(service):
     """ Tails the temperature_log.csv and uploads entries to google sheets
     """
-    range_name = 'Sheet1!A1'
-
+    range_name = 'Sheet1!A:C'
+    print('clearing sheet')
+    print(clear(service, range_name))
+    print('uploading any existing logs')
     upload_logfile(service, range_name)
 
+    print('tailing the log...')
     import subprocess
     f = subprocess.Popen(['tail', '-F', '-n', '0', LOGFILE],
                          stdout=subprocess.PIPE, stderr=subprocess.PIPE)

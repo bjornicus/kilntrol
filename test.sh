@@ -1,1 +1,1 @@
-python3 -m unittest src/test
+python3 -m unittest src/test.py

@@ -1,6 +1,7 @@
 """kilntrol unit tests"""
 import unittest
-from kilntrol import KilnTrol, TargetProfile
+from kilntrol import KilnTrol
+from target_profile import TargetProfile
 
 import time
 

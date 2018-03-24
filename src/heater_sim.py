@@ -5,7 +5,7 @@ import time
 
 HEATERSTATEFILE = 'logs/_heater.sim'
 TEMPERATUREFILE = 'logs/_temperature.sim'
-TICKS_PER_SECOND = 100
+TICKS_PER_SECOND = 500
 
 
 class HeaterRelay(object):
@@ -50,15 +50,16 @@ def main():
         startTemp = temperatureFile.read()
     print('starting at ' + startTemp)
     temperature = float(startTemp)
+    room_temperature = 65
     while running:
         try:
             with open(HEATERSTATEFILE, "r") as heaterStateFile:
+                # there's always cooling
+                temperature -=  0.0001 * (temperature - room_temperature) # per second
+                # but sometimes heating as well
                 if heaterStateFile.read() == "on":
-                    temperature = temperature + \
-                        (1 - temperature/2500) * 0.33
-                else:
-                    # T(t) = Ts + (T0 - Ts ) e(-kt) but t == 1 always
-                    temperature = 65 + (temperature - 65)*(0.995)
+                    temperature += 0.33
+
             with open(TEMPERATUREFILE, "w") as temperatureFile:
                 temperatureFile.write(str(temperature))
             # print(temperature)

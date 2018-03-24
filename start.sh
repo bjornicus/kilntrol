@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # SIGTERM-handler
 term_handler() {

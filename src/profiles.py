@@ -18,6 +18,13 @@ test_profile = [
     [30 * MINUTES, 70]
 ]
 
+candle =[ 
+    [0, 70],
+    [10 * MINUTES, 200],
+    [60 * MINUTES, 200],
+    [90 * MINUTES, 150]
+]
+
 glaze_profile = [
     [0, 65],
     [2 * HOURS , 550],

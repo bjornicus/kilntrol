@@ -63,7 +63,7 @@ def main():
         from clocks import BasicClock as Clock
         from max31855 import MAX31855
         from heater import HeaterRelay
-        tick_interval - 5
+        tick_interval = 5
     from target_profile import TargetProfile
     from loggers import FileLogger as Logger
 

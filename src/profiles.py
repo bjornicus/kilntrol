@@ -32,7 +32,6 @@ glaze_profile = [
     [6 * HOURS , 1900],
     [7 * HOURS , 2010],
     [7 * HOURS + 40 * MINUTES , 2010],
-    [8 * HOURS , 2120]
-    # [8 * HOURS + 1 * MINUTES, 1200],
-    # [10 * HOURS , 1200]
+    [8 * HOURS + 30 * MINUTES , 2120],
+    [10 * HOURS , 1200]
 ]

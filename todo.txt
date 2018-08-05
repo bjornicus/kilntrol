@@ -3,3 +3,4 @@
 - resume on restart w/ smart clock
 √ start script should not exit and should kill spawned processes on exit
 √ upload log starting at a1, overwriting existing stuff
+- cleanup GPIO on exit

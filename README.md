@@ -1,7 +1,9 @@
 # kilntrol
-Raspberry pi automatic kiln controller and graphical viewer.
+Raspberry pi automatic kiln controller and graphical viewer (via google sheets).
 
-`upload_logs.py`Logs temperature readings to a google spreadsheet.  Requires google api python client:
+Uploading to google sheets requires google api python client:
 `pip install --upgrade google-api-python-client`
 
-When running on the raspberry pi use `python upload_logs.py --noauth_local_webserver` to start.
+Start the controller and log uploader by running `./start`
+
+### TODO: describe the hardware setup

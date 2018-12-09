@@ -58,7 +58,7 @@ def main():
     if len(sys.argv) > 1 and sys.argv[1] == "sim":
         from clocks import SpeedySimClock as Clock
         from heater_sim import HeaterRelay, MAX31855, TICKS_PER_SECOND
-        tick_interval = 5/TICKS_PER_SECOND
+        tick_interval = 5 / TICKS_PER_SECOND
     else:
         from clocks import BasicClock as Clock
         from max31855 import MAX31855
@@ -67,7 +67,8 @@ def main():
     from target_profile import TargetProfile
     from loggers import FileLogger as Logger
 
-    from profiles import glaze_profile as target_profile
+    from profiles import crystal_profile as target_profile
+    # from profiles import glaze_profile as target_profile
     # from profiles import test_profile as target_profile
     # from profiles import sample_profile as target_profile
 

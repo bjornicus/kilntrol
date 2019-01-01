@@ -38,15 +38,15 @@ glaze_profile = [
 
 crystal_profile = [
     [0, 65],
-    [1 * HOURS, 415],
-    [2 * HOURS, 765],
-    [3 * HOURS, 1115],
-    [4 * HOURS, 1465],
-    [6 * HOURS, 2000],
-    [7 * HOURS, 2150],
-    [7 * HOURS + 45 * MINUTES, 2200],
-    [8 * HOURS, 2200],
-    [8 * HOURS + 6 * MINUTES, 2150],
-    [8 * HOURS + 21 * MINUTES, 2150],
+    [1 * HOURS, 395],
+    [2 * HOURS, 727],
+    [3 * HOURS, 1060],
+    [4 * HOURS, 1392],
+    [6 * HOURS, 1900],
+    [7 * HOURS, 2042],
+    [7 * HOURS + 45 * MINUTES, 2090],
+    [8 * HOURS, 2090],
+    [8 * HOURS + 6 * MINUTES, 2042],
+    [8 * HOURS + 21 * MINUTES, 2042],
     [14 * HOURS + 30 * MINUTES, 1400]
 ]

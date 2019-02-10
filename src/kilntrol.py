@@ -75,7 +75,7 @@ def main():
     temperature = MAX31855(cs_pin=27, clock_pin=22,
                            data_pin=17, units="f")
     heater = HeaterRelay(relay_pin=26)
-    clock = Clock()
+    clock = Clock(time.time() - (5*60*60 + 60*30))
     logger = Logger('logs/temperature')
     target_profile = TargetProfile(target_profile)
 

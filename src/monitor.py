@@ -12,3 +12,7 @@ def main():
     while clock.now() < t_stop:
         logger.log(clock.now(), temperature.get(), 0)
         time.sleep(tick_interval)
+
+
+if __name__ == '__main__':
+    main()

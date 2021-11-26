@@ -1,13 +1,6 @@
 MINUTES = 60
 HOURS = 60 * MINUTES
 
-sample_profile = [
-    [0, 1174],
-    [1 * MINUTES, 2000],
-    [65 * MINUTES, 2000],
-    [70 * MINUTES, 70],
-    [2 * HOURS, 70]
-]
 
 test_profile = [
     [0, 70],

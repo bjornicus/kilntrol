@@ -80,16 +80,8 @@ class KilnTrolTests(unittest.TestCase):
 
         self.assertEqual(profile.temperature_at(6), 0)
 
-    def test_glaze_profile(self):
-        from profiles import sample_profile, MINUTES
-        profile = TargetProfile(sample_profile)
-        self.assertEqual(profile.temperature_at(1 * MINUTES), 72)
-        self.assertEqual(profile.temperature_at(7 * HOURS + 1 * MINUTES), 2010)
-        self.assertEqual(profile.temperature_at(8 * HOURS), 2120)
-        self.assertEqual(profile.temperature_at(8 * HOURS + 1 * MINUTES), 2010)
-        self.assertEqual(profile.temperature_at(7 * HOURS + 1 * MINUTES), 2010)
 
-    # @unittest.skip("reason for skipping")
+    # @unittest.skip("reason for skipping")a
     def test_run_to_completion(self):
         """
             create a kilntrol and run to completion

@@ -70,7 +70,6 @@ def main():
     from profiles import crystal_profile as target_profile
     # from profiles import glaze_profile as target_profile
     # from profiles import test_profile as target_profile
-    # from profiles import sample_profile as target_profile
 
     temperature = MAX31855(cs_pin=27, clock_pin=22,
                            data_pin=17, units="f")

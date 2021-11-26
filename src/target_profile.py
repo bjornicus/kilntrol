@@ -1,4 +1,11 @@
+from profiles import get_sec
 
+def createProfile(profileData):
+    def toPoint(e):
+        return [get_sec(e[0]), e[1]]
+
+    points = list(map(toPoint, profileData))
+    return TargetProfile(points)
 class TargetProfile(object):
     def __init__(self, points):
         self.points = points

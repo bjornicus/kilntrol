@@ -1,10 +1,6 @@
 import unittest
-from target_profile import TargetProfile
-
-def get_sec(time_str):
-    """Get Seconds from time."""
-    h, m, s = time_str.split(':')
-    return int(h) * 3600 + int(m) * 60 + int(s)
+from target_profile import TargetProfile, createProfile
+from profiles import get_sec
 
 class ProfilesTests(unittest.TestCase):
     def test_profile(self):
@@ -33,10 +29,15 @@ class ProfilesTests(unittest.TestCase):
     
     def test_parse_profile(self):
         # use 1 degree per second heating for eazy asserts
-        data = [
+        profileData = [
             ["00:00:00", 0],
             ["00:00:01", 1],
             ["00:01:00", 60],
             ["00:02:00", 60*2],
             ["01:00:00", 60*60]
         ]
+        profile = createProfile(profileData)
+
+        self.assertEqual(profile.temperature_at(1), 1)
+        self.assertEqual(profile.temperature_at(30), 30)
+        self.assertEqual(profile.temperature_at(90), 90)

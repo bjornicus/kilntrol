@@ -1,3 +1,5 @@
+import json
+
 def hhmmss_to_sec(time_str):
     """Get Seconds from time."""
     h, m, s = time_str.split(':')
@@ -9,6 +11,12 @@ def createProfile(profileData):
 
     points = list(map(toPoint, profileData))
     return TargetProfile(points)
+
+def loadProfile(filePath):
+    f = open(filePath)
+    profileData = json.load(f)
+    f.close()
+    return createProfile(profileData)
 
 class TargetProfile(object):
     def __init__(self, points):

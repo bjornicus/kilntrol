@@ -1,5 +1,5 @@
 import unittest
-from target_profile import TargetProfile, createProfile, hhmmss_to_sec
+from target_profile import TargetProfile, createProfile, loadProfile, hhmmss_to_sec
 
 class ProfilesTests(unittest.TestCase):
     def test_profile(self):
@@ -19,7 +19,7 @@ class ProfilesTests(unittest.TestCase):
 
         self.assertEqual(profile.temperature_at(6), 0)
     
-    def test_get_sec(self):
+    def test_hhmmss_to_sec(self):
         self.assertEqual(hhmmss_to_sec("00:00:00"), 0)
         self.assertEqual(hhmmss_to_sec("00:00:01"), 1)
         self.assertEqual(hhmmss_to_sec("00:01:00"), 60)
@@ -40,3 +40,14 @@ class ProfilesTests(unittest.TestCase):
         self.assertEqual(profile.temperature_at(1), 1)
         self.assertEqual(profile.temperature_at(30), 30)
         self.assertEqual(profile.temperature_at(90), 90)
+
+    def test_load_profile_from_file(self):
+        profile = loadProfile('test-profile.json')
+
+        self.assertEqual(profile.temperature_at(0), 60)
+        self.assertEqual(profile.temperature_at(30*60), 90) # 00:00:30
+        self.assertEqual(profile.temperature_at(1*60*60), 120) # 01:00:00
+        self.assertEqual(profile.temperature_at(1*60*60 + 30*60), 120 + 50 ) # 01:30:00
+        self.assertEqual(profile.temperature_at(2*60*60), 220) # 02:00:00
+        self.assertEqual(profile.temperature_at(3*60*60), 220) # 03:00:00
+        self.assertEqual(profile.temperature_at(4*60*60), 100) # 04:00:00

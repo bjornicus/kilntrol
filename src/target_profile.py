@@ -9,6 +9,7 @@ def createProfile(profileData):
 
     points = list(map(toPoint, profileData))
     return TargetProfile(points)
+
 class TargetProfile(object):
     def __init__(self, points):
         self.points = points

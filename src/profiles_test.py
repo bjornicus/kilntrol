@@ -1,6 +1,5 @@
 import unittest
-from target_profile import TargetProfile, createProfile
-from profiles import get_sec
+from target_profile import TargetProfile, createProfile, hhmmss_to_sec
 
 class ProfilesTests(unittest.TestCase):
     def test_profile(self):
@@ -21,11 +20,11 @@ class ProfilesTests(unittest.TestCase):
         self.assertEqual(profile.temperature_at(6), 0)
     
     def test_get_sec(self):
-        self.assertEqual(get_sec("00:00:00"), 0)
-        self.assertEqual(get_sec("00:00:01"), 1)
-        self.assertEqual(get_sec("00:01:00"), 60)
-        self.assertEqual(get_sec("01:00:00"), 60*60)
-        self.assertEqual(get_sec("01:02:03"), 60*60 + 2*60 + 3)
+        self.assertEqual(hhmmss_to_sec("00:00:00"), 0)
+        self.assertEqual(hhmmss_to_sec("00:00:01"), 1)
+        self.assertEqual(hhmmss_to_sec("00:01:00"), 60)
+        self.assertEqual(hhmmss_to_sec("01:00:00"), 60*60)
+        self.assertEqual(hhmmss_to_sec("01:02:03"), 60*60 + 2*60 + 3)
     
     def test_parse_profile(self):
         # use 1 degree per second heating for eazy asserts

@@ -1,8 +1,11 @@
-from profiles import get_sec
+def hhmmss_to_sec(time_str):
+    """Get Seconds from time."""
+    h, m, s = time_str.split(':')
+    return int(h) * 3600 + int(m) * 60 + int(s)
 
 def createProfile(profileData):
     def toPoint(e):
-        return [get_sec(e[0]), e[1]]
+        return [hhmmss_to_sec(e[0]), e[1]]
 
     points = list(map(toPoint, profileData))
     return TargetProfile(points)

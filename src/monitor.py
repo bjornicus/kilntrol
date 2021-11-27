@@ -5,7 +5,7 @@ import time
 
 def main():
     """ Run KilnTrol """
-    from clocks import BasicClock as Clock
+    from clock import Clock
     from max31855 import MAX31855
     from target_profile import TargetProfile
     from loggers import FileLogger as Logger

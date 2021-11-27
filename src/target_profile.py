@@ -12,10 +12,8 @@ def createProfile(profileData):
     points = list(map(toPoint, profileData))
     return TargetProfile(points)
 
-def loadProfile(filePath):
-    f = open(filePath)
-    profileData = json.load(f)
-    f.close()
+def loadProfile(file):
+    profileData = json.load(file)
     return createProfile(profileData)
 
 class TargetProfile(object):

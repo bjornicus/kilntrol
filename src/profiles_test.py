@@ -42,7 +42,9 @@ class ProfilesTests(unittest.TestCase):
         self.assertEqual(profile.temperature_at(90), 90)
 
     def test_load_profile_from_file(self):
-        profile = loadProfile('test-profile.json')
+        f = open('test-profile.json')
+        profile = loadProfile(f)
+        f.close()
 
         self.assertEqual(profile.temperature_at(0), 60)
         self.assertEqual(profile.temperature_at(30*60), 90) # 00:00:30

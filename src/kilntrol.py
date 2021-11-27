@@ -4,6 +4,9 @@
 """ Kilt Troll """
 import time
 
+from options import create_arg_parser
+from target_profile import TargetProfile, hhmmss_to_sec, loadProfile
+
 
 class KilnTrol(object):
     """ KilnTrol Kiln Controller """
@@ -54,8 +57,12 @@ class KilnTrol(object):
 
 def main():
     """ Run KilnTrol """
+    options = create_arg_parser().parse_args()
+    print(options)
+
     import sys
-    if len(sys.argv) > 1 and sys.argv[1] == "sim":
+    if options.simulate:
+        print('using simulated kiln')
         from clocks import SpeedySimClock as Clock
         from heater_sim import HeaterRelay, MAX31855, TICKS_PER_SECOND
         tick_interval = 5 / TICKS_PER_SECOND
@@ -64,24 +71,19 @@ def main():
         from max31855 import MAX31855
         from heater import HeaterRelay
         tick_interval = 5
-    from target_profile import TargetProfile
     from loggers import FileLogger as Logger
 
-    from profiles import crystal_profile as target_profile
-    # from profiles import glaze_profile as target_profile
-    # from profiles import test_profile as target_profile
+    target_profile = loadProfile(options.profile)
 
     temperature = MAX31855(cs_pin=27, clock_pin=22,
                            data_pin=17, units="f")
     heater = HeaterRelay(relay_pin=26)
     clock = Clock()
     logger = Logger('logs/temperature')
-    target_profile = TargetProfile(target_profile)
 
     kilntrol = KilnTrol(temperature, heater, clock,
                         target_profile, logger, tick_interval)
     kilntrol.run()
-
 
 if __name__ == '__main__':
     main()

@@ -6,6 +6,8 @@ import time
 
 from options import create_arg_parser
 from target_profile import TargetProfile, hhmmss_to_sec, loadProfile
+from heater_sim import TICKS_PER_SECOND
+
 
 
 class KilnTrol(object):
@@ -54,32 +56,49 @@ class KilnTrol(object):
             self.logger.log(self.clock.now(), self.temperature.get(), 0)
             time.sleep(self.tick_interval)
 
+def create_clock(options):
+    if options.simulate:
+        from clocks import SimClock as Clock
+    else:
+        from clocks import BasicClock as Clock
+    startTime = hhmmss_to_sec(options.time)
+    return Clock(startTime)
+
+def create_temperature_reader(options):
+    if options.simulate:
+        from heater_sim import MAX31855
+    else:
+        from max31855 import MAX31855
+    return MAX31855(cs_pin=27, clock_pin=22,
+                           data_pin=17, units="f")
+
+def create_heater(options):
+    if options.simulate:
+        from heater_sim import HeaterRelay
+    else:
+        from heater import HeaterRelay
+    return HeaterRelay(relay_pin=26)
+
+def create_logger(options):
+    from loggers import FileLogger as Logger
+    return Logger('logs/temperature')
 
 def main():
     """ Run KilnTrol """
     options = create_arg_parser().parse_args()
     print(options)
 
-    import sys
     if options.simulate:
         print('using simulated kiln')
-        from clocks import SpeedySimClock as Clock
-        from heater_sim import HeaterRelay, MAX31855, TICKS_PER_SECOND
         tick_interval = 5 / TICKS_PER_SECOND
     else:
-        from clocks import BasicClock as Clock
-        from max31855 import MAX31855
-        from heater import HeaterRelay
         tick_interval = 5
-    from loggers import FileLogger as Logger
 
     target_profile = loadProfile(options.profile)
-
-    temperature = MAX31855(cs_pin=27, clock_pin=22,
-                           data_pin=17, units="f")
-    heater = HeaterRelay(relay_pin=26)
-    clock = Clock()
-    logger = Logger('logs/temperature')
+    temperature = create_temperature_reader(options)
+    heater = create_heater(options)
+    clock = create_clock(options)
+    logger = create_logger(options)
 
     kilntrol = KilnTrol(temperature, heater, clock,
                         target_profile, logger, tick_interval)

@@ -7,3 +7,6 @@ class Clock(object):
 
     def now(self):
         return (time.time() - self.start) * self.clock_speed_factor
+    
+    def world_seconds(self, clock_seconds):
+        return clock_seconds / self.clock_speed_factor

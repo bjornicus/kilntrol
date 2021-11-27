@@ -8,8 +8,6 @@ from options import create_arg_parser
 from target_profile import TargetProfile, hhmmss_to_sec, loadProfile
 from heater_sim import TICKS_PER_SECOND
 
-
-
 class KilnTrol(object):
     """ KilnTrol Kiln Controller """
 
@@ -28,7 +26,7 @@ class KilnTrol(object):
         while self.running:
             try:
                 self.tick()
-                time.sleep(self.tick_interval)
+                self.wait(self.tick_interval)
                 if self.target_profile.is_finished(self.clock.now()):
                     self.heater.off()
                     self.running = False
@@ -39,6 +37,9 @@ class KilnTrol(object):
     def stop(self):
         """ Stop the run loop """
         self.running = False
+
+    def wait(self, seconds):
+        time.sleep(self.clock.world_seconds(seconds))
 
     def tick(self):
         """ Check the current and desired temperature and turn the heater on or off as needed """
@@ -54,15 +55,16 @@ class KilnTrol(object):
     def log_until(self, t_stop):
         while self.clock.now() < t_stop:
             self.logger.log(self.clock.now(), self.temperature.get(), 0)
-            time.sleep(self.tick_interval)
+            self.wait(self.tick_interval)
 
 def create_clock(options):
-    if options.simulate:
-        from clocks import SimClock as Clock
-    else:
-        from clocks import BasicClock as Clock
+    from clock import Clock
     startTime = hhmmss_to_sec(options.time)
-    return Clock(startTime)
+    if options.simulate: 
+        clock_speed = 10
+    else:
+        clock_speed = 1
+    return Clock(startTime, clock_speed)
 
 def create_temperature_reader(options):
     if options.simulate:
@@ -88,20 +90,13 @@ def main():
     options = create_arg_parser().parse_args()
     print(options)
 
-    if options.simulate:
-        print('using simulated kiln')
-        tick_interval = 5 / TICKS_PER_SECOND
-    else:
-        tick_interval = 5
-
     target_profile = loadProfile(options.profile)
     temperature = create_temperature_reader(options)
     heater = create_heater(options)
     clock = create_clock(options)
     logger = create_logger(options)
 
-    kilntrol = KilnTrol(temperature, heater, clock,
-                        target_profile, logger, tick_interval)
+    kilntrol = KilnTrol(temperature, heater, clock, target_profile, logger) 
     kilntrol.run()
 
 if __name__ == '__main__':

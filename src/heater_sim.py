@@ -8,8 +8,8 @@ TEMPERATUREFILE = 'logs/_temperature.sim'
 TICKS_PER_SECOND = 500
 
 
-class HeaterRelay(object):
-    def __init__(self, relay_pin, board="sim"):
+class SimulatedHeaterRelay(object):
+    def __init__(self):
         pass
 
     def on(self):
@@ -29,8 +29,8 @@ class HeaterRelay(object):
             return self.on()
 
 
-class MAX31855(object):
-    def __init__(self, cs_pin, clock_pin, data_pin, units="c", board="sim"):
+class SimulatedThermocoupleReader(object):
+    def __init__(self):
         pass
 
     def get(self):

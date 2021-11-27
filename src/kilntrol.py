@@ -68,18 +68,20 @@ def create_clock(options):
 
 def create_temperature_reader(options):
     if options.simulate:
-        from heater_sim import MAX31855
+        from heater_sim import SimulatedThermocoupleReader
+        return SimulatedThermocoupleReader()
     else:
         from max31855 import MAX31855
-    return MAX31855(cs_pin=27, clock_pin=22,
+        return MAX31855(cs_pin=27, clock_pin=22,
                            data_pin=17, units="f")
 
 def create_heater(options):
     if options.simulate:
-        from heater_sim import HeaterRelay
+        from heater_sim import SimulatedHeaterRelay
+        return SimulatedHeaterRelay()
     else:
         from heater import HeaterRelay
-    return HeaterRelay(relay_pin=26)
+        return HeaterRelay(relay_pin=26)
 
 def create_logger(options):
     from loggers import FileLogger as Logger

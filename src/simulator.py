@@ -1,5 +1,6 @@
 
 #!/usr/bin/python
+import datetime
 from time import sleep
 from clock import Clock
 
@@ -10,9 +11,9 @@ class KilnSimulator(object):
         self.temperature = start_temperature
         self.room_temperature = room_temperature
         self.heat_input_rate = 0
-        self.heat_loss_rate = -0.00022
+        self.heat_loss_rate = -0.000071
     def heat_on(self):
-        self.heat_input_rate = 0.55
+        self.heat_input_rate = 0.18
     def heat_off(self):
         self.heat_input_rate = 0
     def run(self, duration_seconds):
@@ -46,20 +47,21 @@ def main():
     """ Run the simulated heater """
     running = True
     clock = Clock()
-    kiln = KilnSimulator()
+    kiln = KilnSimulator(start_temperature=1713.2)
     heater = SimulatedHeaterRelay(kiln)
     temperarature = SimulatedThermocoupleReader(kiln)
-    step = 0
-    while running:
-        step +=1
+    runtime_seconds = 0
+    heater.on()
+    while running and runtime_seconds < 60*5*26:
         try:
-            if step % 60 == 0:
-                heater.on()
-                print(temperarature.get())
-            if step % 120 == 0:
-                heater.off()
+            if runtime_seconds % (60*5) == 0:
+                # heater.on()
+                print(f'{str(datetime.timedelta(seconds=runtime_seconds))}, {temperarature.get()}')
+            # if step % 120 == 0:
+            #     heater.off()
 
-            sleep(0.01)
+            # sleep(0.01)
+            runtime_seconds +=5
             kiln.run(5)
         except KeyboardInterrupt:
             running = False

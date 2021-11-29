@@ -6,7 +6,7 @@ import time
 import asyncio
 
 from options import create_arg_parser
-from target_profile import TargetProfile, hhmmss_to_sec, loadProfile
+from target_profile import TargetProfile, hhmmss_to_sec, loadProfile, sec_to_hhmmss
 
 class KilnTrol(object):
     """ KilnTrol Kiln Controller """
@@ -30,7 +30,9 @@ class KilnTrol(object):
                 if self.target_profile.is_finished(self.clock.now()):
                     self.heater.off()
                     self.running = False
-                    await self.log_until(self.clock.now() * 1.5)
+                    log_stop_time = self.clock.now() * 1.5
+                    print(f'profile complete after {sec_to_hhmmss(self.clock.now())} , logging until {sec_to_hhmmss(log_stop_time)} ')
+                    await self.log_until(log_stop_time)
             except KeyboardInterrupt:
                 self.running = False
 
@@ -61,7 +63,7 @@ def create_clock(options):
     from clock import Clock
     startTime = hhmmss_to_sec(options.time)
     if options.simulate: 
-        clock_speed = 10
+        clock_speed = 100
     else:
         clock_speed = 1
     return Clock(startTime, clock_speed)

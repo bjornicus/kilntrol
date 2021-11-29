@@ -3,6 +3,7 @@
 
 """ Kilt Troll """
 import time
+import asyncio
 
 from options import create_arg_parser
 from target_profile import TargetProfile, hhmmss_to_sec, loadProfile
@@ -19,17 +20,17 @@ class KilnTrol(object):
         self.tick_interval = tick_interval
         self.running = False
 
-    def run(self):
+    async def run(self):
         """ Start the run loop """
         self.running = True
         while self.running:
             try:
                 self.tick()
-                self.wait(self.tick_interval)
+                await self.wait(self.tick_interval)
                 if self.target_profile.is_finished(self.clock.now()):
                     self.heater.off()
                     self.running = False
-                    self.log_until(self.clock.now() * 1.5)
+                    await self.log_until(self.clock.now() * 1.5)
             except KeyboardInterrupt:
                 self.running = False
 
@@ -37,8 +38,8 @@ class KilnTrol(object):
         """ Stop the run loop """
         self.running = False
 
-    def wait(self, seconds):
-        time.sleep(self.clock.world_seconds(seconds))
+    async def wait(self, seconds):
+        await asyncio.sleep(self.clock.world_seconds(seconds))
 
     def tick(self):
         """ Check the current and desired temperature and turn the heater on or off as needed """
@@ -51,10 +52,10 @@ class KilnTrol(object):
             self.heater.off()
         self.logger.log(now, t, target_temperature)
 
-    def log_until(self, t_stop):
+    async def log_until(self, t_stop):
         while self.clock.now() < t_stop:
             self.logger.log(self.clock.now(), self.temperature.get(), 0)
-            self.wait(self.tick_interval)
+            await self.wait(self.tick_interval)
 
 def create_clock(options):
     from clock import Clock
@@ -90,23 +91,32 @@ def create_kiln_simulator(options):
     from simulator import KilnSimulator
     options.kiln = KilnSimulator()
 
-def main():
+async def run_kiln_simulator(clock, kiln):
+    while True:
+        await asyncio.sleep(clock.world_seconds(1))
+        kiln.run(1)
+
+async def main():
     """ Run KilnTrol """
     options = create_arg_parser().parse_args()
     print(options)
 
-    if options.simulate:
-        create_kiln_simulator(options)
 
     target_profile = loadProfile(options.profile)
     target_profile.dump_csv('logs/target_profile.csv')
+
+    clock = create_clock(options)
+
+    if options.simulate:
+        create_kiln_simulator(options)
+        asyncio.create_task(run_kiln_simulator(clock, options.kiln))
     temperature = create_temperature_reader(options)
     heater = create_heater(options)
-    clock = create_clock(options)
     logger = create_logger(options)
 
-    kilntrol = KilnTrol(temperature, heater, clock, target_profile, logger) 
-    kilntrol.run()
+    kilntrol = KilnTrol(temperature, heater, clock, target_profile, logger)
+
+    await kilntrol.run()
 
 if __name__ == '__main__':
-    main()
+    asyncio.run(main())

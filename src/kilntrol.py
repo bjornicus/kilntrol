@@ -68,7 +68,7 @@ def create_clock(options):
 def create_temperature_reader(options):
     if options.simulate:
         from simulator import SimulatedThermocoupleReader
-        return SimulatedThermocoupleReader()
+        return SimulatedThermocoupleReader(options.kiln)
     else:
         from max31855 import MAX31855
         return MAX31855(cs_pin=27, clock_pin=22,
@@ -77,7 +77,7 @@ def create_temperature_reader(options):
 def create_heater(options):
     if options.simulate:
         from simulator import SimulatedHeaterRelay
-        return SimulatedHeaterRelay()
+        return SimulatedHeaterRelay(options.kiln)
     else:
         from heater import HeaterRelay
         return HeaterRelay(relay_pin=26)
@@ -86,10 +86,17 @@ def create_logger(options):
     from loggers import FileLogger as Logger
     return Logger('logs/temperature')
 
+def create_kiln_simulator(options):
+    from simulator import KilnSimulator
+    options.kiln = KilnSimulator()
+
 def main():
     """ Run KilnTrol """
     options = create_arg_parser().parse_args()
     print(options)
+
+    if options.simulate:
+        create_kiln_simulator(options)
 
     target_profile = loadProfile(options.profile)
     target_profile.dump_csv('logs/target_profile.csv')

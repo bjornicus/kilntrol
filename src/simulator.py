@@ -24,8 +24,9 @@ class KilnSimulator(object):
             delta_t_heating = self.heat_input_rate
             self.temperature += delta_t_heating + delta_t_cooling 
 
+defaultKiln = KilnSimulator()
 class SimulatedHeaterRelay(object):
-    def __init__(self, kiln):
+    def __init__(self, kiln=defaultKiln):
         self.kiln = kiln
 
     def on(self):
@@ -36,7 +37,7 @@ class SimulatedHeaterRelay(object):
 
 
 class SimulatedThermocoupleReader(object):
-    def __init__(self, kiln):
+    def __init__(self, kiln=defaultKiln):
         self.kiln = kiln
 
     def get(self):

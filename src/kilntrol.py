@@ -6,7 +6,6 @@ import time
 
 from options import create_arg_parser
 from target_profile import TargetProfile, hhmmss_to_sec, loadProfile
-from heater_sim import TICKS_PER_SECOND
 
 class KilnTrol(object):
     """ KilnTrol Kiln Controller """
@@ -93,6 +92,7 @@ def main():
     print(options)
 
     target_profile = loadProfile(options.profile)
+    target_profile.dump_csv('logs/target_profile.csv')
     temperature = create_temperature_reader(options)
     heater = create_heater(options)
     clock = create_clock(options)

@@ -1,9 +1,13 @@
+import datetime
 import json
 
 def hhmmss_to_sec(time_str):
     """Get Seconds from time."""
     h, m, s = time_str.split(':')
     return int(h) * 3600 + int(m) * 60 + int(s)
+
+def sec_to_hhmmss(seconds):
+    return str(datetime.timedelta(seconds=seconds))
 
 def createProfile(profileData):
     def toPoint(e):
@@ -20,6 +24,12 @@ class TargetProfile(object):
     def __init__(self, points):
         self.points = points
         self.last_time = points[-1][0]
+
+    def dump_csv(self, outfile):
+        print('dumping target profile to', outfile)
+        with open(outfile, 'w') as output:
+            lines = map(lambda p : f'{sec_to_hhmmss(p[0])}, {p[1]}\n', self.points)
+            output.writelines(lines)
 
     def temperature_at(self, time):
         if self.is_finished(time):

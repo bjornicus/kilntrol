@@ -31,7 +31,7 @@ class KilnTrol(object):
                     self.heater.off()
                     self.running = False
                     log_stop_time = self.clock.now() * 1.5
-                    print(f'profile complete after {sec_to_hhmmss(self.clock.now())} , logging until {sec_to_hhmmss(log_stop_time)} ')
+                    print(f'profile complete after {sec_to_hhmmss(self.clock.now())}, logging until {sec_to_hhmmss(log_stop_time)} ')
                     await self.log_until(log_stop_time)
             except KeyboardInterrupt:
                 self.running = False

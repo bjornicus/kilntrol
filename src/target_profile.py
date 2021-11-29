@@ -28,8 +28,8 @@ class TargetProfile(object):
     def dump_csv(self, outfile):
         print('dumping target profile to', outfile)
         with open(outfile, 'w') as output:
-            lines = map(lambda p : f'{sec_to_hhmmss(p[0])}, {p[1]}\n', self.points)
-            output.writelines(lines)
+            entries = map(lambda p : f'{sec_to_hhmmss(p[0])}, {p[1]}\n', self.points)
+            output.writelines(['Time, Target\n'] + list(entries))
 
     def temperature_at(self, time):
         if self.is_finished(time):

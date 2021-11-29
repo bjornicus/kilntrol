@@ -68,7 +68,7 @@ def create_clock(options):
 
 def create_temperature_reader(options):
     if options.simulate:
-        from heater_sim import SimulatedThermocoupleReader
+        from simulator import SimulatedThermocoupleReader
         return SimulatedThermocoupleReader()
     else:
         from max31855 import MAX31855
@@ -77,7 +77,7 @@ def create_temperature_reader(options):
 
 def create_heater(options):
     if options.simulate:
-        from heater_sim import SimulatedHeaterRelay
+        from simulator import SimulatedHeaterRelay
         return SimulatedHeaterRelay()
     else:
         from heater import HeaterRelay

@@ -2,7 +2,6 @@
 #!/usr/bin/python
 import datetime
 from time import sleep
-from clock import Clock
 
 
 class KilnSimulator(object):
@@ -47,7 +46,6 @@ class SimulatedThermocoupleReader(object):
 def main():
     """ Run the simulated heater """
     running = True
-    clock = Clock()
     kiln = KilnSimulator(start_temperature=1713.2)
     heater = SimulatedHeaterRelay(kiln)
     temperarature = SimulatedThermocoupleReader(kiln)

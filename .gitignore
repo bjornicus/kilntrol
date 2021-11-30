@@ -100,3 +100,4 @@ ENV/
 # mypy
 .mypy_cache/
 token.json
+logs/target_profile.csv

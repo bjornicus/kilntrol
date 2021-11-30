@@ -92,11 +92,11 @@ def clear(service, range_name):
         body={}).execute()
 
 
-def upload_logfile(service, range_name):
+def upload_logfile(service, range_name, logfile=LOGFILE):
     """ Uploads the log file contents to the spreadsheet
     """
     rows = []
-    with open(LOGFILE, "r") as file:
+    with open(logfile, "r") as file:
         for l in file:
             rows.append(l.strip().split(','))
     append_rows(service, range_name, rows)
@@ -106,7 +106,7 @@ def tail_and_upload(service):
     """ Tails the temperature_log.csv and uploads entries to google sheets
     """
     range_name = 'Sheet1!A:C'
-    print('clearing sheet')
+    print('clearing log')
     print(clear(service, range_name))
     print('uploading any existing logs')
     upload_logfile(service, range_name)
@@ -117,7 +117,8 @@ def tail_and_upload(service):
                          stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
     while True:
-        line = f.stdout.readline()
+        line = f.stdout.readline().decode()
+        print('appending', line)
         try:
             append_row(service, range_name, line.split(','))
         except (KeyboardInterrupt, SystemExit):
@@ -128,6 +129,12 @@ def tail_and_upload(service):
                 line
             ])
 
+def upload_target_profile(service):
+    range_name = 'Sheet1!E:F'
+    print('clearing target profile')
+    print(clear(service, range_name))
+    print('uploading target profile')
+    upload_logfile(service, range_name, 'logs/target_profile.csv')
 
 def test(service):
     """ Uploads a test entry to google sheets
@@ -140,6 +147,7 @@ def test(service):
 
 def main():
     service = get_service()
+    upload_target_profile(service)
     tail_and_upload(service)
     # test(sevice)
 

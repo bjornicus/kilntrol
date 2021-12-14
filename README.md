@@ -17,3 +17,31 @@ For kilntrol you'll need:
 For uploading temperature logs to google sheets you'll need:
 - The dependecies installed: `pip3 install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib`
 
+## setup
+Wire up your raspberry pi and max30855 like this ![](pi_wiring.png)
+
+Install Raspberry Pi OS Lite on the SD card and configure it with your wifi info and ssh enabled.  This is easiest with [Raspberry Pi Imager](https://www.raspberrypi.com/software/). Hint: before flashing press ctrl-shift-X to bring up advanced options to set up your wifi, hostname, and ssh access.
+
+Insert the SD card and boot your pi. Ssh to the pi (e.g. if you set the hostname to 'kiln.local' in the above step then `ssh pi@kiln.local`). Install git and dependencies, an clone the repo:
+```
+sudo apt install git python3-pip
+pip3 install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib
+git clone https://github.com/bjornicus/kilntrol.git
+```
+
+## running
+Cd into the kilntrol directory, choose the profile you want to run and start kilntrol with that profile. For example, to run the short test profile: 
+```
+python3 src/kilntrol.py -p test-profile-short.json
+```
+Then start the log uploader:
+```
+python3 src/upload_logs.py 
+```
+TODO: figure out how to set up a device flow for authorization, in the meantime one can run upload_logs on a computer with a browser and then copy the token.json file to the pi.  Also TODO: how to set up a google sheet for users other than me?
+
+you can watch the current state of the kiln with:
+```
+tail -f logs/temperature.log
+```
+![](relay.jpg)

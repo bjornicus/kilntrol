@@ -4,8 +4,6 @@ from __future__ import print_function
 import os
 import sys
 
-from apiclient import discovery
-
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
@@ -58,7 +56,7 @@ def get_service():
         The sheets service
     """
     credentials = get_credentials()
-    service = discovery.build('sheets', 'v4', credentials=credentials)
+    service = build('sheets', 'v4', credentials=credentials)
     return service
 
 

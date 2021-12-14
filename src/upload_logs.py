@@ -10,8 +10,7 @@ from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 
 
-# If modifying these scopes, delete your previously saved credentials
-# at ~/.credentials/sheets.googleapis.com-kiln-troll.json
+# If modifying these scopes, delete your previously token.json
 # see https://developers.google.com/sheets/api/quickstart/python
 SCOPES = 'https://www.googleapis.com/auth/spreadsheets'
 CLIENT_SECRET_FILE = 'client_id.json'
@@ -42,7 +41,7 @@ def get_credentials():
         else:
             flow = InstalledAppFlow.from_client_secrets_file(
                 'client_id.json', SCOPES)
-            creds = flow.run_local_server(port=0)
+            creds = flow.run_console()
         # Save the credentials for the next run
         with open('token.json', 'w') as token:
             token.write(creds.to_json())

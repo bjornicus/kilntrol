@@ -38,7 +38,9 @@ Then start the log uploader:
 ```
 python3 src/upload_logs.py 
 ```
-TODO: figure out how to set up a device flow for authorization, in the meantime one can run upload_logs on a computer with a browser and then copy the token.json file to the pi.  Also TODO: how to set up a google sheet for users other than me?
+Visit the URL and complete the app authorization, then paste the code it gives back into the `Enter the authorization code:` prompt.
+
+TODO: how to set up a google sheet for users other than me?
 
 you can watch the current state of the kiln with:
 ```

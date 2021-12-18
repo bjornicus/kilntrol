@@ -12,7 +12,7 @@ from google.oauth2.credentials import Credentials
 
 # If modifying these scopes, delete your previously token.json
 # see https://developers.google.com/sheets/api/quickstart/python
-SCOPES = 'https://www.googleapis.com/auth/spreadsheets'
+SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 CLIENT_SECRET_FILE = 'client_id.json'
 APPLICATION_NAME = 'Kiln Troll'
 SPREADSHEET_ID = '11HniCGaGZ8Hxs9w4wf1NqTmgrF_GLUpVq_j3qO5IJ2k'

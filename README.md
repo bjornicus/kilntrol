@@ -49,4 +49,4 @@ tail -f logs/temperature.log
 ![](relay.jpg)
 
 ## Similar projects
-Jason Bruce's (Kiln Controller](https://github.com/jbruce12000/kiln-controller) project uses basically the same hardware setup, has better documentation and more contributors and some other fancy features.  
+Jason Bruce's [Kiln Controller](https://github.com/jbruce12000/kiln-controller) project uses basically the same hardware setup, has better documentation and more contributors and some other fancy features.  

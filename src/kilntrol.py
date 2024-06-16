@@ -22,7 +22,7 @@ class KilnTrol(object):
 
     async def run(self):
         """ Start the run loop """
-        print('startingt he control loop')
+        print('startingt the control loop')
         self.running = True
         while self.running:
             try:

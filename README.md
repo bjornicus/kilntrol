@@ -40,6 +40,12 @@ python3 src/upload_logs.py
 ```
 Visit the URL and complete the app authorization, then paste the code it gives back into the `Enter the authorization code:` prompt.
 
+If you ever need to just refresh or regenerate the OAuth token (e.g. after changing scopes or client secret), run the uploader with the `--refresh-token` flag:
+```
+python3 src/upload_logs.py --refresh-token
+```
+This will update `token.json` and exit without touching the spreadsheet.
+
 TODO: how to set up a google sheet for users other than me?
 
 you can watch the current state of the kiln with:

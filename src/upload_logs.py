@@ -142,6 +142,24 @@ def test(service):
 
 
 def main():
+    # parse command line arguments
+    import argparse
+
+    parser = argparse.ArgumentParser(
+        description='Upload kiln logs to Google Sheets')
+    parser.add_argument('--refresh-token',
+                        action='store_true',
+                        help='Obtain or refresh the OAuth token and exit')
+    args = parser.parse_args()
+
+    if args.refresh_token:
+        # only refresh the credentials file and quit
+        print('refreshing token.json...')
+        # get_credentials already handles writing/refreshing the token
+        get_credentials()
+        print('done')
+        return
+
     service = get_service()
     upload_target_profile(service)
     tail_and_upload(service)

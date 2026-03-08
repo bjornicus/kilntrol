@@ -55,7 +55,7 @@ def get_service():
         The sheets service
     """
     credentials = get_credentials()
-    service = build('sheets', 'v4', credentials=credentials)
+    service = build('sheets', 'v4', credentials=credentials, static_discovery=False)
     return service
 
 
